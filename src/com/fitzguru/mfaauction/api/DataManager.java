@@ -57,8 +57,7 @@ public class DataManager {
   public void fetchAllItems(final Runnable after) {
     Log.i("TEST", "Fetching all items.");
     ParseQuery<AuctionItem> query = ParseQuery.getQuery(AuctionItem.class);
-    query.addAscendingOrder("closetime");
-    query.addAscendingOrder("name");
+    query.addAscendingOrder("programNumber");
     query.findInBackground(new FindCallback<AuctionItem>() {
       @Override
       public void done(List<AuctionItem> items, ParseException e) {

@@ -71,18 +71,6 @@
                 android:background="@drawable/gray_top">
 
                 <TextView
-                    android:id="@+id/itemcard_programNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="false"
-                    android:translationY="12dp"
-                    android:textSize="48sp"
-                    android:text="r"
-                    android:textColor="#55222222"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="12dp" />
-
-                <TextView
                     android:id="@+id/dashcard_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -379,6 +367,18 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/itemcard_programNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="false"
+                android:translationY="12dp"
+                android:textSize="48sp"
+                android:text="r"
+                android:textColor="#98FFFFFF"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="12dp" />
 
         </RelativeLayout>
 
