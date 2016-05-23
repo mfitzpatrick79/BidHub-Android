@@ -1,4 +1,4 @@
-package com.hsdemo.auction;
+package com.fitzguru.mfaauction;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -35,10 +35,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.hsdemo.auction.api.BiddingClient;
-import com.hsdemo.auction.api.DataManager;
-import com.hsdemo.auction.events.BidsRefreshedEvent;
-import com.hsdemo.auction.models.AuctionItem;
+import com.fitzguru.mfaauction.api.BiddingClient;
+import com.fitzguru.mfaauction.api.DataManager;
+import com.fitzguru.mfaauction.events.BidsRefreshedEvent;
+import com.fitzguru.mfaauction.models.AuctionItem;
 
 import java.util.ArrayList;
 import java.util.Date;

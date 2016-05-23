@@ -1,4 +1,4 @@
-package com.hsdemo.auction;
+package com.fitzguru.mfaauction;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -11,7 +11,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 
-import com.hsdemo.auction.api.DataManager;
+import com.fitzguru.mfaauction.api.DataManager;
 import com.parse.ParsePushBroadcastReceiver;
 
 import org.json.JSONObject;

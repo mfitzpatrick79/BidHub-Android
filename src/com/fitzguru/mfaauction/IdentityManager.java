@@ -1,4 +1,4 @@
-package com.hsdemo.auction;
+package com.fitzguru.mfaauction;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

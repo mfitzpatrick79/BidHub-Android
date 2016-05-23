@@ -1,11 +1,11 @@
-package com.hsdemo.auction.api;
+package com.fitzguru.mfaauction.api;
 
 import android.app.Activity;
 import android.util.Log;
 
-import com.hsdemo.auction.IdentityManager;
-import com.hsdemo.auction.models.AuctionItem;
-import com.hsdemo.auction.models.Bid;
+import com.fitzguru.mfaauction.IdentityManager;
+import com.fitzguru.mfaauction.models.AuctionItem;
+import com.fitzguru.mfaauction.models.Bid;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;

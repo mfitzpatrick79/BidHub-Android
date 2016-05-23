@@ -8,7 +8,7 @@
         </encoder>
     </appender>
 
-    <appender name="Crashlytics" class="com.hsdemo.android.logging.CrashlyticsAppender">
+    <appender name="Crashlytics" class="com.fitzguru.android.logging.CrashlyticsAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>

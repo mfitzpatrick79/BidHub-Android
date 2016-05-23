@@ -1,8 +1,8 @@
-package com.hsdemo.auction.models;
+package com.fitzguru.mfaauction.models;
 
 import android.app.Activity;
 
-import com.hsdemo.auction.IdentityManager;
+import com.fitzguru.mfaauction.IdentityManager;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 

@@ -1,4 +1,4 @@
-package com.hsdemo.auction.events;
+package com.fitzguru.mfaauction.events;
 
 /**
  * Created by jtsuji on 11/14/14.

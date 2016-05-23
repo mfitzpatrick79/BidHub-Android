@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.hsdemo.auction"
+    package="com.fitzguru.mfaauction"
     android:versionCode="4"
     android:versionName="1.5" >
 
@@ -11,13 +11,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.hsdemo.auction.AuctionApplication"
+        android:name="com.fitzguru.mfaauction.AuctionApplication"
         android:theme="@style/HubSpotTheme"
         android:icon="@drawable/appicon"
         android:label="Auction"
         android:debuggable="true" >
         <activity
-            android:name="com.hsdemo.auction.LoginActivity"
+            android:name="com.fitzguru.mfaauction.LoginActivity"
             android:windowSoftInputMode="adjustPan"
             android:label="Auction" >
             <intent-filter>
@@ -25,7 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.hsdemo.auction.ItemListActivity"
+        <activity android:name="com.fitzguru.mfaauction.ItemListActivity"
                   android:windowSoftInputMode="adjustPan"/>
 
         <service android:name="com.parse.PushService" />
@@ -44,10 +44,10 @@
                 <!--
                   IMPORTANT: Change "com.parse.tutorials.pushnotifications" to match your app's package name.
                 -->
-                <category android:name="com.hsdemo.auction" />
+                <category android:name="com.fitzguru.mfaauction" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.hsdemo.auction.PushReceiver" android:exported="false">
+        <receiver android:name="com.fitzguru.mfaauction.PushReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
@@ -71,7 +71,7 @@
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <permission android:protectionLevel="signature"
-                android:name="com.hsdemo.auction.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.hsdemo.auction.permission.C2D_MESSAGE" />
+                android:name="com.fitzguru.mfaauction.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.fitzguru.mfaauction.permission.C2D_MESSAGE" />
 
 </manifest>

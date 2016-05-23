@@ -1,4 +1,4 @@
-package com.hsdemo.auction.models;
+package com.fitzguru.mfaauction.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;

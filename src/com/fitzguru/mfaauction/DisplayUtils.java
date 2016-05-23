@@ -1,4 +1,4 @@
-package com.hsdemo.auction;
+package com.fitzguru.mfaauction;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -1,4 +1,4 @@
-package com.hsdemo.auction;
+package com.fitzguru.mfaauction;
 
 import android.content.Intent;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package com.hsdemo.auction.api;
+package com.fitzguru.mfaauction.api;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hsdemo.auction.events.BidsRefreshedEvent;
-import com.hsdemo.auction.models.AuctionItem;
-import com.hsdemo.auction.models.Bid;
+import com.fitzguru.mfaauction.events.BidsRefreshedEvent;
+import com.fitzguru.mfaauction.models.AuctionItem;
+import com.fitzguru.mfaauction.models.Bid;
 import com.loopj.android.http.AsyncHttpClient;
 import com.parse.FindCallback;
 import com.parse.ParseException;

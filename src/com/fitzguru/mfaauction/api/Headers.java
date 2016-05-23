@@ -1,4 +1,4 @@
-package com.hsdemo.auction.api;
+package com.fitzguru.mfaauction.api;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
