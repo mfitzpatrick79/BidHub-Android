@@ -15,8 +15,8 @@ import com.parse.SaveCallback;
 
 public class AuctionApplication extends Application {
 
-  public static final String APP_ID = "<your app id>";
-  public static final String CLIENT_KEY = "<your client key>";
+  public static final String APP_ID = "NSTu2o0vGr9UJ0JYM5iPXSYGoDoQQ3ulrERXUEG0";
+  public static final String CLIENT_KEY = "D3H1F21LuG2lOzf8xf9jRmlOE8aPjrA7pJXffx0L";
 
   @Override
   public void onCreate() {

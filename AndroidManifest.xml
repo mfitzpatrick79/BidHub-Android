@@ -14,7 +14,8 @@
         android:name="com.hsdemo.auction.AuctionApplication"
         android:theme="@style/HubSpotTheme"
         android:icon="@drawable/appicon"
-        android:label="Auction" >
+        android:label="Auction"
+        android:debuggable="true" >
         <activity
             android:name="com.hsdemo.auction.LoginActivity"
             android:windowSoftInputMode="adjustPan"
