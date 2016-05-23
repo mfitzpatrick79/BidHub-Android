@@ -107,8 +107,9 @@ public class DataManager {
       for (AuctionItem item : allItems) {
         for (String word : queryWords) {
           if (word.length() > 1 &&
-                  (item.getName().toLowerCase().contains(word.toLowerCase()) || item.getDonorName().toLowerCase().contains(word.toLowerCase()) ||
-                          item.getDescription().toLowerCase().contains(word.toLowerCase())))
+                  (item.getTitle().toLowerCase().contains(word.toLowerCase()) || item.getArtist().toLowerCase().contains(word.toLowerCase()) ||
+                          item.getDescription().toLowerCase().contains(word.toLowerCase()) || item.getProgramNumberString().toLowerCase().contains(word.toLowerCase())
+                          item.getMedia().toLowerCase().contains(word.toLowerCase())))
             results.add(item);
         }
       }

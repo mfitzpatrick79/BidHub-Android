@@ -71,6 +71,18 @@
                 android:background="@drawable/gray_top">
 
                 <TextView
+                    android:id="@+id/itemcard_programNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:translationY="12dp"
+                    android:textSize="48sp"
+                    android:text="r"
+                    android:textColor="#55222222"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="12dp" />
+
+                <TextView
                     android:id="@+id/dashcard_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -216,14 +228,8 @@
                             android:paddingTop="10dp"
                             android:layout_height="wrap_content">
 
-                            <com.android.volley.toolbox.NetworkImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_marginRight="10dp"
-                                android:id="@+id/avatar" />
-
                             <TextView
-                                android:id="@+id/itemcard_donor"
+                                android:id="@+id/itemcard_artist"
                                 style="@style/basefont_light"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -254,6 +260,33 @@
                         android:background="#22ffffff" />
 
                     <TextView
+                        style="@style/basefont_light"
+                        android:id="@+id/itemcard_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#aaffffff"
+                        android:layout_marginBottom="5dp" />
+
+                    <TextView
+                        style="@style/basefont_light"
+                        android:id="@+id/itemcard_fmv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#aaffffff"
+                        android:layout_marginBottom="5dp" />
+
+                    <TextView
+                        style="@style/basefont_light"
+                        android:id="@+id/itemcard_media"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#aaffffff"
+                        android:layout_marginBottom="15dp" />
+
+                    <TextView
                         android:id="@+id/itemcard_description"
                         style="@style/basefont_light"
                         android:layout_width="match_parent"
@@ -267,7 +300,8 @@
                         android:id="@+id/itemcard_controlscontainer"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
 
                         <LinearLayout
                             android:id="@+id/itemcard_buttons"
@@ -288,21 +322,21 @@
                                     android:layout_width="0px"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="5"
-                                    android:text="+$5" />
+                                    android:text="+$100" />
 
                             <Button style="@style/basefont_light"
                                     android:id="@+id/plusfive"
                                     android:layout_width="0px"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="5"
-                                    android:text="+$10" />
+                                    android:text="+$500" />
 
                             <Button style="@style/basefont_light"
                                     android:id="@+id/plusten"
                                     android:layout_width="0px"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="5"
-                                    android:text="+$25" />
+                                    android:text="+$1000" />
 
                             <Button style="@style/basefont_light"
                                     android:id="@+id/itemcard_other"

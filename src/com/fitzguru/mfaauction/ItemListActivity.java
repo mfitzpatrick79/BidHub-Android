@@ -194,17 +194,26 @@ public class ItemListActivity extends ActionBarActivity {
       @InjectView(R.id.banner)
       NetworkImageView banner;
 
+      @InjectView(R.id.itemcard_programNumber)
+      TextView programNumber;
+
       @InjectView(R.id.itemcard_title)
       TextView title;
 
-      @InjectView(R.id.itemcard_donor)
-      TextView donor;
+      @InjectView(R.id.itemcard_artist)
+      TextView artist;
 
-      @InjectView(R.id.avatar)
-      NetworkImageView avatar;
+      @InjectView(R.id.itemcard_size)
+      TextView size;
+
+      @InjectView(R.id.itemcard_media)
+      TextView media;
 
       @InjectView(R.id.itemcard_description)
       TextView description;
+
+      @InjectView(R.id.itemcard_fmv)
+      TextView fmv;
 
       @InjectView(R.id.itemcard_price)
       TextView price;
@@ -289,26 +298,6 @@ public class ItemListActivity extends ActionBarActivity {
         v.banner.setTag(item.getImageUrl());
       }
 
-      try {
-        String[] fullName = item.getDonorName().split(" ");
-        if (fullName.length > 1) {
-          String first = fullName[0];
-          String last = fullName[1];
-          String firstInitial = first.substring(0, 1);
-
-          String assumedEmail = firstInitial + last + "@hubspot.com";
-
-          if (v.avatar.getTag() == null || !v.avatar.getTag().equals(item.getImageUrl())) {
-            v.avatar.setImageUrl("https://api.hubapi.com/socialintel/v1/avatars?email=" + assumedEmail, DisplayUtils.imageLoader);
-            v.avatar.setTag("https://api.hubapi.com/socialintel/v1/avatars?email=" + assumedEmail);
-          }
-        }
-      }
-      catch (Exception e) {
-        v.avatar.setVisibility(View.GONE);
-        // It's not worth crashing over;
-      }
-
       String topBids = "";
 
       if (item.getQty() > 1) {
@@ -332,8 +321,12 @@ public class ItemListActivity extends ActionBarActivity {
       else
         v.description.setText(Html.fromHtml(item.getDescription() + "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
 
-      v.donor.setText(item.getDonorName());
-      v.title.setText(item.getName());
+      v.programNumber.setText(item.getProgramNumberString());
+      v.title.setText(item.getTitle());
+      v.artist.setText(item.getArtist());
+      v.size.setText(item.getItemSize());
+      v.media.setText(item.getMedia());
+      v.fmv.setText(item.getFairMarketValue());
       if (item.getQty() > 1 && item.getNumberOfBids() > 1) {
         int[] lhBid = item.getLowHighWinningBid();
         v.price.setText(String.format("$%d-%d", lhBid[0], lhBid[1]));
@@ -421,19 +414,19 @@ public class ItemListActivity extends ActionBarActivity {
       v.plusOne.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + 5);
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + 100);
         }
       });
       v.plusFive.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + 10);
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + 500);
         }
       });
       v.plusTen.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + 25);
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + 1000);
         }
       });
       v.other.setOnClickListener(customBidListener);
@@ -595,7 +588,7 @@ public class ItemListActivity extends ActionBarActivity {
 
               // Since it's about to not have no bids.
               if (listQuery.equals(DataManager.QUERY_NOBIDS))
-                Toast.makeText(ItemListActivity.this, "Bid for $" + amt + " on " + item.getName() + " placed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(ItemListActivity.this, "Bid for $" + amt + " on " + item.getTitle() + " placed!", Toast.LENGTH_LONG).show();
 
               if (!placed)
                 Toast.makeText(ItemListActivity.this, "Looks like you were outbid! Try again at the new price.", Toast.LENGTH_LONG).show();
@@ -727,7 +720,7 @@ public class ItemListActivity extends ActionBarActivity {
       AlertDialog.Builder alert = new AlertDialog.Builder(ItemListActivity.this);
 
       alert.setTitle("Search");
-      alert.setMessage("What are you looking for? (Searching in name, donor name, and item description)");
+      alert.setMessage("What are you looking for? (Searching in title, artist, program number, media, and item description)");
 
       final EditText input = new EditText(ItemListActivity.this);
       input.setPadding(DisplayUtils.toPx(20), DisplayUtils.toPx(20), DisplayUtils.toPx(20), DisplayUtils.toPx(20));

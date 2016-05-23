@@ -21,12 +21,50 @@ public class AuctionItem extends ParseObject {
 
   public AuctionItem() {}
 
-  public String getName() {
-    return getString("name");
+  public int getProgramNumber() {
+    return getInt("programNumber");
   }
 
-  public void setName(String name) {
-    put("name", name);
+  public void setProgramNumber(int programNumber) {
+    put("programNumber", programNumber);
+  }
+
+  public String getProgramNumberString() { return Integer.toString(getInt("programNumber")); }
+
+  public void setProgramNumberString(String programNumber) {
+    put("programNumber", programNumber);
+  }
+
+  public String getTitle() {
+    return getString("title");
+  }
+
+  public void setTitle(String title) {
+    put("title", title);
+  }
+
+  public String getArtist() {
+    return getString("artist");
+  }
+
+  public void setArtist(String artist) {
+    put("artist", artist);
+  }
+
+  public String getItemSize() {
+    return getString("size");
+  }
+
+  public void setItemSize(String size) {
+    put("size", size);
+  }
+
+  public String getMedia() {
+    return getString("media");
+  }
+
+  public void setMedia(String media) {
+    put("media", media);
   }
 
   public String getDescription() {
@@ -37,12 +75,12 @@ public class AuctionItem extends ParseObject {
     put("description", description);
   }
 
-  public String getDonorName() {
-    return getString("donorname");
+  public String getFairMarketValue() {
+    return "Fair Market Value: " + getString("fmv");
   }
 
-  public void setDonorName(String donorName) {
-    put("donorname", donorName);
+  public void setFairMarketValue(String fmv) {
+    put("fmv", fmv);
   }
 
   public String getImageUrl() {
