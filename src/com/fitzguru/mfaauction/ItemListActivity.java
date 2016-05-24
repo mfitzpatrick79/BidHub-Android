@@ -34,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fitzguru.mfaauction.api.BiddingClient;
 import com.fitzguru.mfaauction.api.DataManager;
@@ -57,6 +58,9 @@ public class ItemListActivity extends ActionBarActivity {
   BaseAdapter adapter;
 
   boolean gotFirstBids;
+
+  private NetworkImageView mNetworkImageView;
+  private ImageLoader mImageLoader;
 
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
@@ -98,35 +102,36 @@ public class ItemListActivity extends ActionBarActivity {
 
   String listQuery = DataManager.QUERY_ALL;
 
-	/** Called when the activity is first created. */
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-    DisplayUtils.init(this);
+  /** Called when the activity is first created. */
+  public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      DisplayUtils.init(this);
 
-    setContentView(R.layout.main);
-    ButterKnife.inject(this);
+      setContentView(R.layout.main);
+      mNetworkImageView = (NetworkImageView) findViewById(R.id.banner);
+      ButterKnife.inject(this);
 
-    progress.setVisibility(View.VISIBLE);
+      progress.setVisibility(View.VISIBLE);
 
-    setSupportActionBar(toolbar);
-    toolbar.setTitleTextAppearance(this, R.style.basefont_light);
-    toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-    tint.setVisibility(View.VISIBLE);
+      setSupportActionBar(toolbar);
+      toolbar.setTitleTextAppearance(this, R.style.basefont_light);
+      toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+      tint.setVisibility(View.VISIBLE);
 
-    getSupportActionBar().setTitle("All Items");
+      getSupportActionBar().setTitle("All Items");
 
-    Bundle extras = getIntent().getExtras();
-    if (extras != null) {
-      if (extras.containsKey("title"))
-        getSupportActionBar().setTitle(extras.getString("title"));
+      Bundle extras = getIntent().getExtras();
+      if (extras != null) {
+          if (extras.containsKey("title"))
+            getSupportActionBar().setTitle(extras.getString("title"));
 
-      if (extras.containsKey("query"))
-        listQuery = extras.getString("query");
-    }
+          if (extras.containsKey("query"))
+            listQuery = extras.getString("query");
+      }
 
-    setupDrawer();
-    setupMenu();
-	}
+      setupDrawer();
+      setupMenu();
+  }
 
   public void onEvent(BidsRefreshedEvent event) {
     Log.i("TEST", "Received refresh event");
@@ -293,10 +298,7 @@ public class ItemListActivity extends ActionBarActivity {
       final CardViewHolder v = viewHolder;
       final AuctionItem item = getItem(position);
 
-      if (v.banner.getTag() == null || !v.banner.getTag().equals(item.getImageUrl())) {
-        v.banner.setImageUrl(item.getImageUrl(), DisplayUtils.imageLoader);
-        v.banner.setTag(item.getImageUrl());
-      }
+      v.banner.setImageUrl(item.getImageUrl(), mImageLoader);
 
       String topBids = "";
 
@@ -774,6 +776,8 @@ public class ItemListActivity extends ActionBarActivity {
   @Override
   public void onStart() {
     super.onStart();
+    // Instantiate the RequestQueue.
+    mImageLoader = CustomVolleyRequestQueue.getInstance(this.getApplicationContext()).getImageLoader();
     EventBus.getDefault().register(this);
   }
 
