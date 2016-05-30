@@ -328,11 +328,11 @@ public class ItemListActivity extends ActionBarActivity {
         v.media.setText(item.getMedia());
         v.fmv.setText(item.getFairMarketValue());
 
-        if (item.getQty() > 1 && item.getNumberOfBids() > 1) {
+        if (item.getQty() > 1 && item.getNumberOfBids() > 0) {
             int[] lhBid = item.getLowHighWinningBid();
             v.price.setText(String.format("$%d-%d", lhBid[0], lhBid[1]));
         }
-        else if (item.getNumberOfBids() > 1) {
+        else if (item.getNumberOfBids() > 0) {
             v.price.setText("$" + item.getCurrentHighestBid());
         }
         else {
