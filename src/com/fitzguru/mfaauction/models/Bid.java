@@ -14,6 +14,7 @@ public class Bid extends ParseObject {
 
   public static final String INITIAL_BIDDER_EMAIL = "";
   public static final String INITIAL_BIDDER_NAME = "Starting Price";
+  public static final String INITIAL_BIDDER_TELEPHONE = "";
 
   public long createdAt = 0;
 
@@ -23,6 +24,7 @@ public class Bid extends ParseObject {
     Bid bid = new Bid();
     bid.setEmail(INITIAL_BIDDER_EMAIL);
     bid.setName(INITIAL_BIDDER_NAME);
+    bid.setTelephone(INITIAL_BIDDER_TELEPHONE);
     bid.setAmount(price);
     return bid;
   }
@@ -53,6 +55,14 @@ public class Bid extends ParseObject {
 
   public void setName(String name) {
     put("name", name);
+  }
+
+  public String getTelephone() {
+    return getString("telephone");
+  }
+
+  public void setTelephone(String telephone) {
+    put("telephone", telephone);
   }
 
   public String getRelatedItemId() {

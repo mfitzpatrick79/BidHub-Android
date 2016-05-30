@@ -114,12 +114,12 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                    android:layout_height="400dp">
 
                     <com.android.volley.toolbox.NetworkImageView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="400dp"
                         android:scaleType="centerCrop"/>
 
                     <LinearLayout
@@ -326,12 +326,12 @@
                                     android:layout_weight="5"
                                     android:text="+$1000" />
 
-                            <Button style="@style/basefont_light"
+                            <!--Button style="@style/basefont_light"
                                     android:id="@+id/itemcard_other"
                                     android:layout_width="0px"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="3"
-                                    android:text="p" />
+                                    android:text="p" /-->
 
                         </LinearLayout>
 
