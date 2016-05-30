@@ -32,7 +32,7 @@
     <LinearLayout
         android:id="@id/logincontainer"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="300dp"
         android:background="#95000000"
         android:orientation="vertical"
         android:padding="20dp"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:textColor="#bbeeeeee"
             android:textSize="22sp"
-            android:text="Name and email please?"/>
+            android:text="Display name, email, and phone please?"/>
 
         <EditText style="@style/basefont_light"
                   android:id="@+id/name"
@@ -58,7 +58,7 @@
             android:layout_marginTop="10dp"
             android:nextFocusForward="@+id/email"
             android:singleLine="true"
-            android:hint="name"
+            android:hint="display name"
             />
 
         <EditText style="@style/basefont_light"
@@ -68,8 +68,18 @@
                   android:hint="email address"
                   android:singleLine="true"
                   android:inputType="textEmailAddress"
-                  android:nextFocusForward="@+id/gobutton"
+                  android:nextFocusForward="@+id/telephone"
             />
+
+        <EditText
+            style="@style/basefont_light"
+            android:id="@+id/telephone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="telephone"
+            android:singleLine="true"
+            android:inputType="phone"
+            android:nextFocusForward="@+id/gobutton" />
 
         <Button
             android:id="@+id/gobutton"
@@ -78,7 +88,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="Start Bidding"/>
+            android:text="Start Bidding"
+            android:background="@color/background_summer_party_brand" />
 
 
     </LinearLayout>

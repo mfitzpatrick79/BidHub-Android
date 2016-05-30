@@ -99,6 +99,14 @@ public class AuctionItem extends ParseObject {
     put("price", startingPrice);
   }
 
+  public int getPriceIncrement() {
+    return getInt("priceIncrement");
+  }
+
+  public void setPriceIncrement(int priceIncrement) {
+    put("priceIncrement", priceIncrement);
+  }
+
   public Date getOpenTime() {
     return getDate("opentime");
   }
@@ -136,16 +144,22 @@ public class AuctionItem extends ParseObject {
   }
 
   public int getCurrentHighestBid() {
-    return getAllBids().size() > 0 ? getAllBids().get(0) : getStartingPrice();
+    if (getAllBids().size() > 0) {
+      return getAllBids().get(0);
+    } else {
+      Integer startingPrice = (getStartingPrice() - getPriceIncrement());
+      return startingPrice;
+    }
   }
 
   public int[] getLowHighWinningBid() {
     List<Integer> allBids = getAllBids();
     if (allBids.size() > 0) {
-      return new int[]{allBids.get(allBids.size() - 1), allBids.get(0)};
+      return new int[]{ allBids.get(allBids.size() - 1), allBids.get(0) };
     }
     else {
-      return new int[]{getStartingPrice()};
+      Integer startingPrice = (getStartingPrice() - getPriceIncrement());
+      return new int[]{ startingPrice };
     }
   }
 
