@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:title="TEST"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:background="@color/background_summer_party_brand" />
 
         <LinearLayout
             android:id="@+id/base_tint_darken"

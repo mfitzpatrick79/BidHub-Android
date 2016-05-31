@@ -20,7 +20,8 @@ public class BiddingClient {
     final Bid bid = new Bid();
     bid.setRelatedItemId(item.getObjectId());
     bid.setAmount(amt);
-    bid.setName(IdentityManager.getName(context).length() < 4 ? IdentityManager.getEmail(context) : IdentityManager.getName(context));
+    bid.setName(IdentityManager.getName(context).length() < 2 ? IdentityManager.getEmail(context) : IdentityManager.getName(context));
+    bid.setTelephone(IdentityManager.getTelephone(context));
     bid.setEmail(IdentityManager.getEmail(context));
     bid.saveInBackground(new SaveCallback() {
       @Override

@@ -34,6 +34,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fitzguru.mfaauction.api.BiddingClient;
 import com.fitzguru.mfaauction.api.DataManager;
@@ -57,6 +58,9 @@ public class ItemListActivity extends ActionBarActivity {
   BaseAdapter adapter;
 
   boolean gotFirstBids;
+
+  private NetworkImageView mNetworkImageView;
+  private ImageLoader mImageLoader;
 
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
@@ -98,35 +102,36 @@ public class ItemListActivity extends ActionBarActivity {
 
   String listQuery = DataManager.QUERY_ALL;
 
-	/** Called when the activity is first created. */
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-    DisplayUtils.init(this);
+  /** Called when the activity is first created. */
+  public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      DisplayUtils.init(this);
 
-    setContentView(R.layout.main);
-    ButterKnife.inject(this);
+      setContentView(R.layout.main);
+      mNetworkImageView = (NetworkImageView) findViewById(R.id.banner);
+      ButterKnife.inject(this);
 
-    progress.setVisibility(View.VISIBLE);
+      progress.setVisibility(View.VISIBLE);
 
-    setSupportActionBar(toolbar);
-    toolbar.setTitleTextAppearance(this, R.style.basefont_light);
-    toolbar.setTitleTextColor(getResources().getColor(R.color.white));
-    tint.setVisibility(View.VISIBLE);
+      setSupportActionBar(toolbar);
+      toolbar.setTitleTextAppearance(this, R.style.basefont_light);
+      toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+      tint.setVisibility(View.VISIBLE);
 
-    getSupportActionBar().setTitle("All Items");
+      getSupportActionBar().setTitle("All Items");
 
-    Bundle extras = getIntent().getExtras();
-    if (extras != null) {
-      if (extras.containsKey("title"))
-        getSupportActionBar().setTitle(extras.getString("title"));
+      Bundle extras = getIntent().getExtras();
+      if (extras != null) {
+          if (extras.containsKey("title"))
+            getSupportActionBar().setTitle(extras.getString("title"));
 
-      if (extras.containsKey("query"))
-        listQuery = extras.getString("query");
-    }
+          if (extras.containsKey("query"))
+            listQuery = extras.getString("query");
+      }
 
-    setupDrawer();
-    setupMenu();
-	}
+      setupDrawer();
+      setupMenu();
+  }
 
   public void onEvent(BidsRefreshedEvent event) {
     Log.i("TEST", "Received refresh event");
@@ -239,8 +244,8 @@ public class ItemListActivity extends ActionBarActivity {
       @InjectView(R.id.itemcard_bidqty)
       TextView bidQty;
 
-      @InjectView(R.id.itemcard_other)
-      Button other;
+      //@InjectView(R.id.itemcard_other)
+      //Button other;
 
       @InjectView(R.id.itemcard_confirmcontainer)
       View confirmContainer;
@@ -278,85 +283,88 @@ public class ItemListActivity extends ActionBarActivity {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-      CardViewHolder viewHolder;
+        CardViewHolder viewHolder;
 
-      if (convertView == null) {
-        View itemView = getLayoutInflater().inflate(R.layout.item, parent, false);
-        viewHolder = new CardViewHolder(itemView);
-        itemView.setTag(viewHolder);
-        convertView = itemView;
-      }
-      else {
-        viewHolder = (CardViewHolder) convertView.getTag();
-      }
-
-      final CardViewHolder v = viewHolder;
-      final AuctionItem item = getItem(position);
-
-      if (v.banner.getTag() == null || !v.banner.getTag().equals(item.getImageUrl())) {
-        v.banner.setImageUrl(item.getImageUrl(), DisplayUtils.imageLoader);
-        v.banner.setTag(item.getImageUrl());
-      }
-
-      String topBids = "";
-
-      if (item.getQty() > 1) {
-        List<Integer> highestBids = item.getAllBids();
-        for (int i = 0; i < highestBids.size(); i++) {
-          if (i != highestBids.size() - 1)
-            topBids += "$" + highestBids.get(i) + ", ";
-          else if (i == highestBids.size() - 1 && highestBids.size() == 1)
-            topBids += "$" + highestBids.get(i);
-          else
-            topBids += "and $" + highestBids.get(i);
+        if (convertView == null) {
+            View itemView = getLayoutInflater().inflate(R.layout.item, parent, false);
+            viewHolder = new CardViewHolder(itemView);
+            itemView.setTag(viewHolder);
+            convertView = itemView;
+        } else {
+            viewHolder = (CardViewHolder) convertView.getTag();
         }
 
-        if (topBids.length() == 0)
-          topBids = "(no bids, yet!)";
+        final CardViewHolder v = viewHolder;
+        final AuctionItem item = getItem(position);
 
-        v.description.setText(Html.fromHtml(item.getDescription() +
-                String.format("<br><br><b>%d available! Highest %d bidders win.</b><br>The current highest bids are %s.", item.getQty(), item.getQty(), topBids) +
-                "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
-      }
-      else
-        v.description.setText(Html.fromHtml(item.getDescription() + "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
+        v.banner.setImageUrl(item.getImageUrl(), mImageLoader);
 
-      v.programNumber.setText(item.getProgramNumberString());
-      v.title.setText(item.getTitle());
-      v.artist.setText(item.getArtist());
-      v.size.setText(item.getItemSize());
-      v.media.setText(item.getMedia());
-      v.fmv.setText(item.getFairMarketValue());
-      if (item.getQty() > 1 && item.getNumberOfBids() > 1) {
-        int[] lhBid = item.getLowHighWinningBid();
-        v.price.setText(String.format("$%d-%d", lhBid[0], lhBid[1]));
-      }
-      else {
-        v.price.setText("$" + item.getCurrentHighestBid());
-      }
+        String topBids = "";
 
-      v.bidQty.setText(data.getBidQuantityForItem(item.getObjectId()) + " bids");
+        if (item.getQty() > 1) {
+            List<Integer> highestBids = item.getAllBids();
+            for (int i = 0; i < highestBids.size(); i++) {
+                if (i != highestBids.size() - 1)
+                    topBids += "$" + highestBids.get(i) + ", ";
+                else if (i == highestBids.size() - 1 && highestBids.size() == 1)
+                    topBids += "$" + highestBids.get(i);
+                else
+                    topBids += "and $" + highestBids.get(i);
+            }
 
-      DisplayUtils.pictosifyTextView(v.other);
+            if (topBids.length() == 0)
+                topBids = "(no bids, yet!)";
 
-      if (cardsUntouched) {
-        cardsUntouched = false;
-        v.top.setAlpha(0);
-        v.bottom.setAlpha(0);
-        v.loader.setAlpha(0);
+            v.description.setText(Html.fromHtml(item.getDescription() +
+                    String.format("<br><br><b>%d available! Highest %d bidders win.</b><br>The current highest bids are %s.", item.getQty(), item.getQty(), topBids) +
+                    "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
+        } else
+            v.description.setText(Html.fromHtml(item.getDescription() + "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
 
-       animateCardEntry(v, position);
-      }
-      else {
-        v.contentContainer.setTranslationY(DisplayUtils.toPx(42));
-        v.contentContainer.setAlpha(1);
-        v.contentContainer.setScaleY(1);
-        v.topSeparator.setAlpha(1);
-      }
+        v.programNumber.setText(item.getProgramNumberString());
+        v.title.setText(item.getTitle());
+        v.artist.setText(item.getArtist());
+        v.size.setText(item.getItemSize());
+        v.media.setText(item.getMedia());
+        v.fmv.setText(item.getFairMarketValue());
 
-      final String topBidsFinal = topBids;
+        if (item.getQty() > 1 && item.getNumberOfBids() > 0) {
+            int[] lhBid = item.getLowHighWinningBid();
+            v.price.setText(String.format("$%d-%d", lhBid[0], lhBid[1]));
+        }
+        else if (item.getNumberOfBids() > 0) {
+            v.price.setText("$" + item.getCurrentHighestBid());
+        }
+        else {
+          v.price.setText("$" + item.getStartingPrice());
+        }
 
-      View.OnClickListener customBidListener = new View.OnClickListener() {
+        v.plusOne.setText("$" + (item.getCurrentHighestBid() + item.getPriceIncrement()));
+        v.plusFive.setText("$" + (item.getCurrentHighestBid() + (5 * item.getPriceIncrement())));
+        v.plusTen.setText("$" + (item.getCurrentHighestBid() + (10 * item.getPriceIncrement())));
+
+        v.bidQty.setText(data.getBidQuantityForItem(item.getObjectId()) + " bids");
+
+        //DisplayUtils.pictosifyTextView(v.other);
+
+        if (cardsUntouched) {
+          cardsUntouched = false;
+          v.top.setAlpha(0);
+          v.bottom.setAlpha(0);
+          v.loader.setAlpha(0);
+
+          animateCardEntry(v, position);
+        }
+        else {
+          v.contentContainer.setTranslationY(DisplayUtils.toPx(42));
+          v.contentContainer.setAlpha(1);
+          v.contentContainer.setScaleY(1);
+          v.topSeparator.setAlpha(1);
+        }
+
+        final String topBidsFinal = topBids;
+
+        View.OnClickListener customBidListener = new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
           bidding = true;
@@ -376,28 +384,28 @@ public class ItemListActivity extends ActionBarActivity {
 
           alert.setPositiveButton("Bid", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-              String value = input.getText().toString();
-              try {
-                int num = Integer.valueOf(value);
+            String value = input.getText().toString();
+            try {
+              int num = Integer.valueOf(value);
 
-                if (item.getNumberOfBids() > 0 && num <= item.getLowHighWinningBid()[0]) {
-                  Toast.makeText(getApplicationContext(), "You have to bid at least $" + (item.getLowHighWinningBid()[0] + 1), Toast.LENGTH_LONG).show();
-                  return;
-                }
-                else if (item.getNumberOfBids() == 0 && num < item.getStartingPrice()) {
-                  Toast.makeText(getApplicationContext(), "You have to bid at least $" + (item.getLowHighWinningBid()[0]), Toast.LENGTH_LONG).show();
-                  return;
-                }
-
-                showConfirm(v, item, num);
-
+              if (item.getNumberOfBids() > 0 && num <= item.getLowHighWinningBid()[0]) {
+                Toast.makeText(getApplicationContext(), "You have to bid at least $" + (item.getLowHighWinningBid()[0] + item.getPriceIncrement()), Toast.LENGTH_LONG).show();
+                return;
               }
-              catch (NumberFormatException e) {
-                bidding = false;
-                Toast.makeText(ItemListActivity.this, "Nice try, but that isn't a number.", Toast.LENGTH_LONG).show();
-                dialog.dismiss();
+              else if (item.getNumberOfBids() == 0 && num < item.getStartingPrice()) {
+                Toast.makeText(getApplicationContext(), "You have to bid at least $" + (item.getLowHighWinningBid()[0]), Toast.LENGTH_LONG).show();
+                return;
               }
+
+              showConfirm(v, item, num);
+
             }
+            catch (NumberFormatException e) {
+              bidding = false;
+              Toast.makeText(ItemListActivity.this, "Nice try, but that isn't a number.", Toast.LENGTH_LONG).show();
+              dialog.dismiss();
+            }
+          }
           });
 
           alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -414,22 +422,22 @@ public class ItemListActivity extends ActionBarActivity {
       v.plusOne.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + 100);
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + (1 * item.getPriceIncrement()));
         }
       });
       v.plusFive.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + 500);
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + (5 * item.getPriceIncrement()));
         }
       });
       v.plusTen.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + 1000);
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + (10 * item.getPriceIncrement()));
         }
       });
-      v.other.setOnClickListener(customBidListener);
+      //v.other.setOnClickListener(customBidListener);
 
       if (item.hasUserBid(ItemListActivity.this)) {
 
@@ -438,7 +446,7 @@ public class ItemListActivity extends ActionBarActivity {
         v.plusOne.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
         v.plusFive.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
         v.plusTen.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
-        v.other.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
+        //v.other.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
 
         if (v.messageContainer.getVisibility() == View.GONE) {
           v.messageContainer.setVisibility(View.VISIBLE);
@@ -483,7 +491,7 @@ public class ItemListActivity extends ActionBarActivity {
         v.plusOne.setEnabled(true);
         v.plusFive.setEnabled(true);
         v.plusTen.setEnabled(true);
-        v.other.setEnabled(true);
+        //v.other.setEnabled(true);
         v.placeBid.setEnabled(true);
 
         v.price.setTextColor(Color.LTGRAY);
@@ -509,7 +517,7 @@ public class ItemListActivity extends ActionBarActivity {
         v.plusOne.setEnabled(false);
         v.plusFive.setEnabled(false);
         v.plusTen.setEnabled(false);
-        v.other.setEnabled(false);
+        //v.other.setEnabled(false);
         v.placeBid.setEnabled(false);
       }
 
@@ -530,8 +538,8 @@ public class ItemListActivity extends ActionBarActivity {
               .translationX(DisplayUtils.toPx(-60)).alpha(0);
       v.plusTen.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(200)
               .translationX(DisplayUtils.toPx(-60)).alpha(0);
-      v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(300)
-              .translationX(DisplayUtils.toPx(-60)).alpha(0);
+      //v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(300)
+      //        .translationX(DisplayUtils.toPx(-60)).alpha(0);
 
       v.confirmContainer.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(400)
               .alpha(1).translationX(0);
@@ -541,14 +549,18 @@ public class ItemListActivity extends ActionBarActivity {
       final Runnable reshowBidButtons = new Runnable() {
         @Override
         public void run() {
+          v.plusOne.setText("$" + (item.getCurrentHighestBid() + (1 * item.getPriceIncrement())));
+          v.plusFive.setText("$" + (item.getCurrentHighestBid() + (5 * item.getPriceIncrement())));
+          v.plusTen.setText("$" + (item.getCurrentHighestBid() + (10 * item.getPriceIncrement())));
+
           v.plusOne.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(300)
                   .translationX(0).alpha(1);
           v.plusFive.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(200)
                   .translationX(0).alpha(1);
           v.plusTen.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(100)
                   .translationX(0).alpha(1);
-          v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(0)
-                  .translationX(0).alpha(1);
+          //v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(0)
+          //        .translationX(0).alpha(1);
 
           v.confirmContainer.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(250).setStartDelay(0)
                   .alpha(0).translationX(DisplayUtils.toPx(30));
@@ -774,6 +786,8 @@ public class ItemListActivity extends ActionBarActivity {
   @Override
   public void onStart() {
     super.onStart();
+    // Instantiate the RequestQueue.
+    mImageLoader = CustomVolleyRequestQueue.getInstance(this.getApplicationContext()).getImageLoader();
     EventBus.getDefault().register(this);
   }
 
