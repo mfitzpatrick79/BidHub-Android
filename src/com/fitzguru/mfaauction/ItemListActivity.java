@@ -340,8 +340,8 @@ public class ItemListActivity extends ActionBarActivity {
         }
 
         v.plusOne.setText("$" + (item.getCurrentHighestBid() + item.getPriceIncrement()));
-        v.plusFive.setText("$" + (item.getCurrentHighestBid() + (5 * item.getPriceIncrement())));
-        v.plusTen.setText("$" + (item.getCurrentHighestBid() + (10 * item.getPriceIncrement())));
+        v.plusFive.setText("$" + (item.getCurrentHighestBid() + (2 * item.getPriceIncrement())));
+        v.plusTen.setText("$" + (item.getCurrentHighestBid() + (5 * item.getPriceIncrement())));
 
         v.bidQty.setText(data.getBidQuantityForItem(item.getObjectId()) + " bids");
 
@@ -428,13 +428,13 @@ public class ItemListActivity extends ActionBarActivity {
       v.plusFive.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + (5 * item.getPriceIncrement()));
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + (2 * item.getPriceIncrement()));
         }
       });
       v.plusTen.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View vi) {
-          showConfirm(v, item, item.getLowHighWinningBid()[0] + (10 * item.getPriceIncrement()));
+          showConfirm(v, item, item.getLowHighWinningBid()[0] + (5 * item.getPriceIncrement()));
         }
       });
       //v.other.setOnClickListener(customBidListener);
@@ -550,8 +550,8 @@ public class ItemListActivity extends ActionBarActivity {
         @Override
         public void run() {
           v.plusOne.setText("$" + (item.getCurrentHighestBid() + (1 * item.getPriceIncrement())));
-          v.plusFive.setText("$" + (item.getCurrentHighestBid() + (5 * item.getPriceIncrement())));
-          v.plusTen.setText("$" + (item.getCurrentHighestBid() + (10 * item.getPriceIncrement())));
+          v.plusFive.setText("$" + (item.getCurrentHighestBid() + (2 * item.getPriceIncrement())));
+          v.plusTen.setText("$" + (item.getCurrentHighestBid() + (5 * item.getPriceIncrement())));
 
           v.plusOne.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(300)
                   .translationX(0).alpha(1);
