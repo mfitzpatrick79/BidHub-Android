@@ -14,8 +14,7 @@
         android:name="com.fitzguru.mfaauction.AuctionApplication"
         android:theme="@style/HubSpotTheme"
         android:icon="@drawable/appicon"
-        android:label="Auction"
-        android:debuggable="true" >
+        android:label="Auction" >
         <activity
             android:name="com.fitzguru.mfaauction.LoginActivity"
             android:windowSoftInputMode="adjustPan"
