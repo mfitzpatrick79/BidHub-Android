@@ -42,11 +42,11 @@ public class Bid extends ParseObject {
   }
 
   public int getAmount() {
-    return getInt("amt");
+    return getInt("maxBid");
   }
 
-  public void setAmount(int amt) {
-    put("amt", amt);
+  public void setAmount(int maxBid) {
+    put("maxBid", maxBid);
   }
 
   public String getName() {

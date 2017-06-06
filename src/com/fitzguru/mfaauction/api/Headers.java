@@ -15,7 +15,7 @@ public class Headers {
 
     @Override
     public String getValue() {
-      return "JPa6xJnjNpZr7wkueoaw4IXb9YEwY0XUyiAP818I";
+      return "NSTu2o0vGr9UJ0JYM5iPXSYGoDoQQ3ulrERXUEG0";
     }
 
     @Override
@@ -32,7 +32,7 @@ public class Headers {
 
     @Override
     public String getValue() {
-      return "hR4dxJwHiX4N9Y5aGF9M35uuSTT13UiN4E2edjK8";
+      return "D3H1F21LuG2lOzf8xf9jRmlOE8aPjrA7pJXffx0L";
     }
 
     @Override

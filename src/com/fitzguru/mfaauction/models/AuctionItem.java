@@ -67,6 +67,10 @@ public class AuctionItem extends ParseObject {
     put("media", media);
   }
 
+  public String getCallout() { return getString("callout"); }
+
+  public void setCallout(String callout) { put("callout", callout); }
+
   public String getDescription() {
     return getString("description");
   }
@@ -99,9 +103,9 @@ public class AuctionItem extends ParseObject {
     put("price", startingPrice);
   }
 
-  public int getPriceIncrement() {
-    return getInt("priceIncrement");
-  }
+  public String getPriceString() { return "$" + Integer.toString(getInt("price")); }
+
+  public int getPriceIncrement() { return getInt("priceIncrement"); }
 
   public void setPriceIncrement(int priceIncrement) {
     put("priceIncrement", priceIncrement);
@@ -118,6 +122,8 @@ public class AuctionItem extends ParseObject {
   public boolean isOpenForBidding() {
     return !(getOpenTime().after(new Date()) || getCloseTime().before(new Date()));
   }
+
+  public List<String> getCategory() { return getListOrEmptyList("category"); }
 
   public List<Integer> getAllBids() {
     List<Integer> bids = getListOrEmptyList("currentPrice");
@@ -144,8 +150,8 @@ public class AuctionItem extends ParseObject {
   }
 
   public int getCurrentHighestBid() {
-    if (getAllBids().size() > 0) {
-      return getAllBids().get(0);
+    if (getNumberOfBids() > 0) {
+      return getStartingPrice();
     } else {
       Integer startingPrice = (getStartingPrice() - getPriceIncrement());
       return startingPrice;
@@ -153,9 +159,8 @@ public class AuctionItem extends ParseObject {
   }
 
   public int[] getLowHighWinningBid() {
-    List<Integer> allBids = getAllBids();
-    if (allBids.size() > 0) {
-      return new int[]{ allBids.get(allBids.size() - 1), allBids.get(0) };
+    if (getNumberOfBids() > 0) {
+      return new int[]{ getStartingPrice() };
     }
     else {
       Integer startingPrice = (getStartingPrice() - getPriceIncrement());
@@ -173,6 +178,10 @@ public class AuctionItem extends ParseObject {
 
   public boolean isWinning(Activity context) {
     return getCurrentWinners().contains(IdentityManager.getEmail(context));
+  }
+
+  public boolean isInCategory(String cat) {
+    return getCategory().contains(cat);
   }
 
   public int getMyBidWinningIdx(Activity context) {
