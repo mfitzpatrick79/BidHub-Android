@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    android:visibility="invisible">
+    android:visibility="visible">
 
     <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
@@ -23,143 +23,150 @@
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:background="#33000000"
-        android:orientation="vertical" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/toolbar"
-        android:layout_alignParentTop="false"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:adjustViewBounds="false"
-        android:background="@drawable/mfa_logo_2017"
-        android:nestedScrollingEnabled="false"
-        tools:background="@drawable/mfa_logo_2017"
-        tools:layout_height="wrap_content" />
+        android:orientation="vertical"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="30dp"
         android:background="#ccaaaaaa"
         android:orientation="horizontal" />
 
-    <LinearLayout
-        android:id="@+id/logincontainer"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout"
-        android:background="@color/translucent_white"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:layout_below="@+id/linearLayout">
 
-
-        <TextView
-            style="@style/basefont_light"
+        <LinearLayout
+            android:id="@+id/logincontainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="Display name, email, and phone please?"
-            android:textColor="@color/dark_slate_gray"
-            android:textSize="22sp" />
-
-        <EditText
-            android:id="@+id/name"
-            style="@style/basefont_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:elevation="20dp"
-            android:hint="first and last"
-            android:maxLines="1"
-            android:nextFocusForward="@+id/email"
-            android:paddingBottom="8dp"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:textColor="@color/dark_gray"
-            android:textColorHint="@color/dark_gray_semitrans" />
-
-        <EditText
-            android:id="@+id/email"
-            style="@style/basefont_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:hint="email address"
-            android:inputType="textEmailAddress"
-            android:nextFocusForward="@+id/telephone"
-            android:paddingBottom="8dp"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:maxLines="1"
-            android:textColor="@color/dark_gray"
-            android:textColorHint="@color/dark_gray_semitrans" />
-
-        <EditText
-            android:id="@+id/telephone"
-            style="@style/basefont_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:hint="telephone"
-            android:inputType="phone"
-            android:nextFocusForward="@+id/gobutton"
-            android:paddingBottom="8dp"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:maxLines="1"
-            android:textColor="@color/dark_gray"
-            android:textColorHint="@color/dark_gray_semitrans" />
-
-        <Button
-            android:id="@+id/gobutton"
-            style="@style/basefont_light"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/background_summer_party_brand_2017"
-            android:text="Start Bidding"
-            android:textColor="@color/white" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/translucent_white"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            android:paddingBottom="30dp">
 
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/toolbar"
+                android:layout_alignParentTop="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="false"
+                android:background="@drawable/mfa_logo_2017"
+                tools:background="@drawable/mfa_logo_2017"
+                tools:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/basefont_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Display name, email, and phone please?"
+                android:textColor="@color/dark_slate_gray"
+                android:textSize="22sp" />
+
+            <EditText
+                android:id="@+id/name"
+                style="@style/basefont_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:elevation="20dp"
+                android:hint="first and last"
+                android:maxLines="1"
+                android:nextFocusForward="@+id/email"
+                android:paddingBottom="8dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:textColor="@color/dark_gray"
+                android:textColorHint="@color/dark_gray_semitrans" />
+
+            <EditText
+                android:id="@+id/email"
+                style="@style/basefont_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:hint="email address"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:nextFocusForward="@+id/telephone"
+                android:paddingBottom="8dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:textColor="@color/dark_gray"
+                android:textColorHint="@color/dark_gray_semitrans" />
+
+            <EditText
+                android:id="@+id/telephone"
+                style="@style/basefont_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:hint="telephone"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:nextFocusForward="@+id/gobutton"
+                android:paddingBottom="8dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:textColor="@color/dark_gray"
+                android:textColorHint="@color/dark_gray_semitrans" />
+
+            <Button
+                android:id="@+id/gobutton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/background_summer_party_brand_2017"
+                android:elevation="0dp"
+                android:text="Start Bidding"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="false"
+                android:layout_below="@+id/linearLayout2"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/mfaAuction_welcomeText"
+                android:textColor="@color/abc_primary_text_material_light" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/logincontainer"
+        android:layout_below="@+id/scrollView"
         android:background="#ccaaaaaa"
         android:orientation="horizontal" />
-
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/translucent_white"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/mfaAuction_welcomeText"
-        android:textColor="@color/abc_primary_text_material_light" />
 
 </RelativeLayout>

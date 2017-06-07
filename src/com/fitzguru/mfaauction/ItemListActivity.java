@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -35,14 +37,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.fitzguru.mfaauction.api.BiddingClient;
 import com.fitzguru.mfaauction.api.DataManager;
 import com.fitzguru.mfaauction.events.BidsRefreshedEvent;
 import com.fitzguru.mfaauction.models.AuctionItem;
 import com.onesignal.OneSignal;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,10 +61,7 @@ public class ItemListActivity extends AppCompatActivity {
   List<AuctionItem> allItems = new ArrayList<AuctionItem>();
   BaseAdapter adapter;
 
-  boolean gotFirstBids;
-
-  private NetworkImageView mNetworkImageView;
-  private ImageLoader mImageLoader;
+  private ImageView mImageView;
 
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
@@ -80,6 +78,9 @@ public class ItemListActivity extends AppCompatActivity {
   boolean isInitializing = true;
   boolean bidding = false;
   boolean cardsUntouched = true;
+
+  Point displaySize;
+  int sizeForPicasso;
 
   @InjectView(R.id.drawer_layout)
   DrawerLayout mDrawerLayout;
@@ -108,10 +109,14 @@ public class ItemListActivity extends AppCompatActivity {
   /** Called when the activity is first created. */
   public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      DisplayUtils.init(this);
 
-      setContentView(R.layout.main);
-      mNetworkImageView = (NetworkImageView) findViewById(R.id.banner);
+    DisplayMetrics dm = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(dm);
+    displaySize = getDisplaySize(dm);
+    sizeForPicasso = (int) Math.ceil(Math.sqrt(displaySize.x * displaySize.y));
+
+    setContentView(R.layout.main);
+      mImageView = (ImageView) findViewById(R.id.banner);
       ButterKnife.inject(this);
 
       progress.setVisibility(View.VISIBLE);
@@ -200,7 +205,7 @@ public class ItemListActivity extends AppCompatActivity {
       TextView icon;
 
       @InjectView(R.id.banner)
-      NetworkImageView banner;
+      ImageView banner;
 
       @InjectView(R.id.itemcard_programNumber)
       TextView programNumber;
@@ -299,7 +304,8 @@ public class ItemListActivity extends AppCompatActivity {
         final CardViewHolder v = viewHolder;
         final AuctionItem item = getItem(position);
 
-        v.banner.setImageUrl(item.getImageUrl(), mImageLoader);
+        Picasso.with(getApplicationContext()).load(item.getImageUrl()).resize(sizeForPicasso, sizeForPicasso)
+                .centerInside().into(v.banner);
 
         String topBids = "";
 
@@ -643,6 +649,11 @@ public class ItemListActivity extends AppCompatActivity {
     }
   }
 
+  public Point getDisplaySize(DisplayMetrics displayMetrics) {
+    int width = displayMetrics.widthPixels;
+    int height = displayMetrics.heightPixels;
+    return new Point(width, height);
+  }
 
   public void setupDrawer() {
     // ActionBarDrawerToggle is responsible for the menu indicator next to the icon, as well as making
@@ -793,8 +804,6 @@ public class ItemListActivity extends AppCompatActivity {
   @Override
   public void onStart() {
     super.onStart();
-    // Instantiate the RequestQueue.
-    mImageLoader = CustomVolleyRequestQueue.getInstance(this.getApplicationContext()).getImageLoader();
     EventBus.getDefault().register(this);
   }
 

@@ -37,12 +37,12 @@
 
         <ListView
             android:id="@+id/itemslist"
-            android:layout_below="@id/toolbar"
             android:layout_width="match_parent"
-            android:paddingBottom="20dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
             android:clipToPadding="false"
             android:divider="@android:color/transparent"
-            android:layout_height="match_parent" />
+            android:paddingBottom="20dp" />
 
         <ProgressBar
             android:id="@+id/mainprogress"
