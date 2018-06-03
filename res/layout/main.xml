@@ -15,87 +15,92 @@
             android:layout_height="25dp"
             android:background="@color/topgray"></LinearLayout>
 
-        <android.support.v7.widget.Toolbar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background_summer_party_brand_2017"
             android:fitsSystemWindows="true"
             android:title="TEST"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:background="@color/background_summer_party_brand" />
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <LinearLayout
             android:id="@+id/base_tint_darken"
             android:layout_width="match_parent"
             android:layout_height="25dp"
+            android:layout_marginTop="-25dp"
+            android:background="#33000000"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
-            android:focusable="true" android:focusableInTouchMode="true"
-            android:background="#33000000"/>
+            android:visibility="invisible" />
 
         <ListView
             android:id="@+id/itemslist"
-            android:layout_below="@id/toolbar"
             android:layout_width="match_parent"
-            android:paddingBottom="20dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
             android:clipToPadding="false"
             android:divider="@android:color/transparent"
-            android:layout_height="match_parent" />
-        
+            android:paddingBottom="20dp" />
+
         <ProgressBar
             android:id="@+id/mainprogress"
             android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:layout_height="30dp"/>
+            android:progressDrawable="@color/background_summer_party_brand_2017" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/left_drawer"
         android:layout_width="250dp"
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="@android:color/transparent"
         android:choiceMode="singleChoice"
+        android:clickable="true"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        android:clickable="true">
-        
+        android:orientation="vertical">
+
         <RelativeLayout
             style="@style/drawer_style"
-            android:background="@color/slate_gray"
             android:layout_width="match_parent"
-            android:layout_height="120dp">
+            android:layout_height="120dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/slate_gray">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:background="@drawable/bg"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg" />
 
             <LinearLayout
                 android:id="@+id/itemcard_messagecontainer"
-                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_alignParentBottom="true"
                 android:alpha="0.8"
                 android:background="@color/dark_gray"
                 android:gravity="center_vertical"
-                android:layout_alignParentBottom="true"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/menu_email"
                     style="@style/basefont_light"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="#fff"
-                    android:textAllCaps="true"
                     android:paddingLeft="10dp"
-                    android:text="jtsuji@hubspot.com"/>
+                    android:text="jtsuji@hubspot.com"
+                    android:textAllCaps="true"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -109,20 +114,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/slate_gray">
+            android:background="@color/slate_gray"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/menu_all"
-                style="@style/basefont_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textAllCaps="true"
+                android:background="@drawable/clickable"
                 android:clickable="true"
                 android:padding="20dp"
-                android:background="@drawable/clickable"
-                android:text="All Items"/>
+                android:text="All Items"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -134,12 +139,13 @@
                 style="@style/basefont_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textAllCaps="true"
+                android:background="@drawable/clickable"
                 android:clickable="true"
                 android:padding="20dp"
-                android:background="@drawable/clickable"
-                android:text="my items"/>
+                android:text="my items"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,12 +157,13 @@
                 style="@style/basefont_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textAllCaps="true"
+                android:background="@drawable/clickable"
                 android:clickable="true"
                 android:padding="20dp"
-                android:background="@drawable/clickable"
-                android:text="items with no bids"/>
+                android:text="items with no bids"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,12 +175,13 @@
                 style="@style/basefont_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textAllCaps="true"
+                android:background="@drawable/clickable"
                 android:clickable="true"
                 android:padding="20dp"
-                android:background="@drawable/clickable"
-                android:text="Log out/Switch user"/>
+                android:text="Log out/Switch user"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

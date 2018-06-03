@@ -5,16 +5,18 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +29,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -34,12 +37,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.fitzguru.mfaauction.api.BiddingClient;
 import com.fitzguru.mfaauction.api.DataManager;
 import com.fitzguru.mfaauction.events.BidsRefreshedEvent;
 import com.fitzguru.mfaauction.models.AuctionItem;
+import com.onesignal.OneSignal;
+import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +53,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
-public class ItemListActivity extends ActionBarActivity {
+public class ItemListActivity extends AppCompatActivity {
 
   @InjectView(R.id.itemslist)
   ListView itemsList;
@@ -57,10 +61,7 @@ public class ItemListActivity extends ActionBarActivity {
   List<AuctionItem> allItems = new ArrayList<AuctionItem>();
   BaseAdapter adapter;
 
-  boolean gotFirstBids;
-
-  private NetworkImageView mNetworkImageView;
-  private ImageLoader mImageLoader;
+  private ImageView mImageView;
 
   @InjectView(R.id.toolbar)
   Toolbar toolbar;
@@ -77,6 +78,9 @@ public class ItemListActivity extends ActionBarActivity {
   boolean isInitializing = true;
   boolean bidding = false;
   boolean cardsUntouched = true;
+
+  Point displaySize;
+  int sizeForPicasso;
 
   @InjectView(R.id.drawer_layout)
   DrawerLayout mDrawerLayout;
@@ -105,10 +109,14 @@ public class ItemListActivity extends ActionBarActivity {
   /** Called when the activity is first created. */
   public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      DisplayUtils.init(this);
 
-      setContentView(R.layout.main);
-      mNetworkImageView = (NetworkImageView) findViewById(R.id.banner);
+    DisplayMetrics dm = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(dm);
+    displaySize = getDisplaySize(dm);
+    sizeForPicasso = (int) Math.ceil(Math.sqrt(displaySize.x * displaySize.y));
+
+    setContentView(R.layout.main);
+      mImageView = (ImageView) findViewById(R.id.banner);
       ButterKnife.inject(this);
 
       progress.setVisibility(View.VISIBLE);
@@ -134,9 +142,9 @@ public class ItemListActivity extends ActionBarActivity {
   }
 
   public void onEvent(BidsRefreshedEvent event) {
-    Log.i("TEST", "Received refresh event");
+    Log.i("ItemListActivity", "Received refresh event");
     if (isInitializing) {
-      Log.i("TEST", "Init...");
+      Log.i("ItemListActivity", "Init...");
       isInitializing = false;
       setup();
     }
@@ -197,7 +205,7 @@ public class ItemListActivity extends ActionBarActivity {
       TextView icon;
 
       @InjectView(R.id.banner)
-      NetworkImageView banner;
+      ImageView banner;
 
       @InjectView(R.id.itemcard_programNumber)
       TextView programNumber;
@@ -244,8 +252,8 @@ public class ItemListActivity extends ActionBarActivity {
       @InjectView(R.id.itemcard_bidqty)
       TextView bidQty;
 
-      //@InjectView(R.id.itemcard_other)
-      //Button other;
+      @InjectView(R.id.itemcard_other)
+      Button other;
 
       @InjectView(R.id.itemcard_confirmcontainer)
       View confirmContainer;
@@ -263,7 +271,6 @@ public class ItemListActivity extends ActionBarActivity {
         ButterKnife.inject(this, view);
         DisplayUtils.pictosifyTextView(icon);
       }
-
     }
 
     @Override
@@ -297,7 +304,8 @@ public class ItemListActivity extends ActionBarActivity {
         final CardViewHolder v = viewHolder;
         final AuctionItem item = getItem(position);
 
-        v.banner.setImageUrl(item.getImageUrl(), mImageLoader);
+        Picasso.with(getApplicationContext()).load(item.getImageUrl()).resize(sizeForPicasso, sizeForPicasso)
+                .centerInside().into(v.banner);
 
         String topBids = "";
 
@@ -319,7 +327,7 @@ public class ItemListActivity extends ActionBarActivity {
                     String.format("<br><br><b>%d available! Highest %d bidders win.</b><br>The current highest bids are %s.", item.getQty(), item.getQty(), topBids) +
                     "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
         } else
-            v.description.setText(Html.fromHtml(item.getDescription() + "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
+            v.description.setText(Html.fromHtml("<b style='color:#005ca6;'>" + item.getCallout() + "</b><br>" + item.getDescription() + "<br><br>Bidding closes: " + DateUtils.getRelativeTimeSpanString(item.getCloseTime().getTime()) + "."));
 
         v.programNumber.setText(item.getProgramNumberString());
         v.title.setText(item.getTitle());
@@ -345,7 +353,7 @@ public class ItemListActivity extends ActionBarActivity {
 
         v.bidQty.setText(data.getBidQuantityForItem(item.getObjectId()) + " bids");
 
-        //DisplayUtils.pictosifyTextView(v.other);
+        DisplayUtils.pictosifyTextView(v.other);
 
         if (cardsUntouched) {
           cardsUntouched = false;
@@ -437,7 +445,7 @@ public class ItemListActivity extends ActionBarActivity {
           showConfirm(v, item, item.getLowHighWinningBid()[0] + (5 * item.getPriceIncrement()));
         }
       });
-      //v.other.setOnClickListener(customBidListener);
+      v.other.setOnClickListener(customBidListener);
 
       if (item.hasUserBid(ItemListActivity.this)) {
 
@@ -446,7 +454,7 @@ public class ItemListActivity extends ActionBarActivity {
         v.plusOne.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
         v.plusFive.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
         v.plusTen.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
-        //v.other.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
+        v.other.setEnabled(item.getMyBidWinningIdx(ItemListActivity.this) != 1);
 
         if (v.messageContainer.getVisibility() == View.GONE) {
           v.messageContainer.setVisibility(View.VISIBLE);
@@ -491,7 +499,7 @@ public class ItemListActivity extends ActionBarActivity {
         v.plusOne.setEnabled(true);
         v.plusFive.setEnabled(true);
         v.plusTen.setEnabled(true);
-        //v.other.setEnabled(true);
+        v.other.setEnabled(true);
         v.placeBid.setEnabled(true);
 
         v.price.setTextColor(Color.LTGRAY);
@@ -517,7 +525,7 @@ public class ItemListActivity extends ActionBarActivity {
         v.plusOne.setEnabled(false);
         v.plusFive.setEnabled(false);
         v.plusTen.setEnabled(false);
-        //v.other.setEnabled(false);
+        v.other.setEnabled(false);
         v.placeBid.setEnabled(false);
       }
 
@@ -538,8 +546,8 @@ public class ItemListActivity extends ActionBarActivity {
               .translationX(DisplayUtils.toPx(-60)).alpha(0);
       v.plusTen.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(200)
               .translationX(DisplayUtils.toPx(-60)).alpha(0);
-      //v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(300)
-      //        .translationX(DisplayUtils.toPx(-60)).alpha(0);
+      v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(300)
+              .translationX(DisplayUtils.toPx(-60)).alpha(0);
 
       v.confirmContainer.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(400)
               .alpha(1).translationX(0);
@@ -559,8 +567,8 @@ public class ItemListActivity extends ActionBarActivity {
                   .translationX(0).alpha(1);
           v.plusTen.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(100)
                   .translationX(0).alpha(1);
-          //v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(0)
-          //        .translationX(0).alpha(1);
+          v.other.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(450).setStartDelay(0)
+                  .translationX(0).alpha(1);
 
           v.confirmContainer.animate().setInterpolator(new AnticipateOvershootInterpolator()).setDuration(250).setStartDelay(0)
                   .alpha(0).translationX(DisplayUtils.toPx(30));
@@ -641,6 +649,11 @@ public class ItemListActivity extends ActionBarActivity {
     }
   }
 
+  public Point getDisplaySize(DisplayMetrics displayMetrics) {
+    int width = displayMetrics.widthPixels;
+    int height = displayMetrics.heightPixels;
+    return new Point(width, height);
+  }
 
   public void setupDrawer() {
     // ActionBarDrawerToggle is responsible for the menu indicator next to the icon, as well as making
@@ -708,8 +721,13 @@ public class ItemListActivity extends ActionBarActivity {
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int whichButton) {
+            ParseUser currentUser = ParseUser.getCurrentUser();
             IdentityManager.setEmail("", ItemListActivity.this);
             IdentityManager.setName("", ItemListActivity.this);
+            IdentityManager.setTelephone("", ItemListActivity.this);
+            currentUser.logOut();
+            Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(loginIntent);
             finish();
           }
         });
@@ -732,7 +750,7 @@ public class ItemListActivity extends ActionBarActivity {
       AlertDialog.Builder alert = new AlertDialog.Builder(ItemListActivity.this);
 
       alert.setTitle("Search");
-      alert.setMessage("What are you looking for? (Searching in title, artist, program number, media, and item description)");
+      alert.setMessage("What are you looking for? (Searching in title, artist, media, and item description)");
 
       final EditText input = new EditText(ItemListActivity.this);
       input.setPadding(DisplayUtils.toPx(20), DisplayUtils.toPx(20), DisplayUtils.toPx(20), DisplayUtils.toPx(20));
@@ -786,8 +804,6 @@ public class ItemListActivity extends ActionBarActivity {
   @Override
   public void onStart() {
     super.onStart();
-    // Instantiate the RequestQueue.
-    mImageLoader = CustomVolleyRequestQueue.getInstance(this.getApplicationContext()).getImageLoader();
     EventBus.getDefault().register(this);
   }
 
@@ -795,7 +811,7 @@ public class ItemListActivity extends ActionBarActivity {
   public void onResume() {
     super.onResume();
     data.beginBidCoverage(this);
-    PushReceiver.clearAll();
+    OneSignal.clearOneSignalNotifications();
 
     if (IdentityManager.getEmail(this).length() < 5) {
       startActivity(new Intent(this, LoginActivity.class));
