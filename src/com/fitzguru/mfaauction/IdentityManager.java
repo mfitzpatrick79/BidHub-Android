@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
  */
 public class IdentityManager {
   public static final String PREFS_EMAIL_KEY = "EMAIL";
-  public static final String PREFS_NAME_KEY = "NAME";
+  public static final String PREFS_NAME_KEY = "FULLNAME";
   public static final String PREFS_TELEPHONE_KEY = "TELEPHONE";
   public static final String SHAREDPREFS_KEY = "auction";
 

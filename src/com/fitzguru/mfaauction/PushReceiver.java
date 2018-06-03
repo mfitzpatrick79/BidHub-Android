@@ -62,10 +62,10 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
   protected static Notification getAndShowNotification(Context context, Intent intent) {
     try {
       JSONObject extras = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-      Log.i("TEST", "alert: " + extras.toString(1));
+      Log.i("PushReceiver", "alert: " + extras.toString(1));
       // Generic alert
       if (!extras.has("itemname") && !extras.has("personname") && extras.has("alert")) {
-        Log.i("TEST", "got push alert");
+        Log.i("PushReceiver", "got push alert");
 
         Intent bidUp = new Intent(context, ItemListActivity.class);
         bidUp.putExtra("query", DataManager.QUERY_MINE);
@@ -76,8 +76,8 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 .setSmallIcon(R.drawable.notificationicon)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.appicon))
                 .setAutoCancel(true)
-                .setTicker("Message from Auction App")
-                .setContentTitle("Auction App")
+                .setTicker("Message from MFA Summer Party Auction App")
+                .setContentTitle("MFA Auction App")
                 .setContentIntent(bidUpPending)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(extras.getString("alert")))
                 .setContentText(extras.getString("alert"));
@@ -114,8 +114,8 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
               .setSmallIcon(R.drawable.notificationicon)
               .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.appicon))
               .setAutoCancel(true)
-              .setTicker("Message from Auction App")
-              .setContentTitle("Auction App")
+              .setTicker("Message from MFA Summer Party Auction App")
+              .setContentTitle("MFA Auction App")
               .setContentText(intent.getExtras().getString("com.parse.Data"));
 
       currentNotification = mBuilder.build();
@@ -196,7 +196,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
 
     public OutbidNotification(JSONObject object) {
       try {
-        Log.i("TEST", object.toString());
+        Log.i("PushReceiver", object.toString());
         this.email = object.getString("email");
         this.itemName = object.getString("itemname");
         this.itemId = object.getString("itemid");
@@ -210,7 +210,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
       }
       catch (Exception e) {
         e.printStackTrace();
-        Log.i("TEST", "serialization error");
+        Log.i("PushReceiver", "serialization error");
       }
     }
   }

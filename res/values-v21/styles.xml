@@ -14,8 +14,4 @@
         <item name="colorAccent">@color/background_summer_party_brand_2017</item>
         <item name="android:textColorPrimaryInverse">@android:color/primary_text_dark</item>
     </style>
-
-    <style name="drawer_style">
-        <item name="android:layout_marginTop">25dp</item >
-    </style>
 </resources>

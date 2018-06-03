@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, ParseStarterProjectActivity!</string>
-    <string name="app_name">ParseStarterProject</string>
-    <string name="mfaAuction_welcomeText">Welcome to amazing art for an exceptional cause. These items were selected by MFA curators and patrons to support the contemporary artists and raise funds for the innovative programs at the MFA, Boston. See the works in person at the Summer Party, starting 9pm June 11, 2016. Bid high and often before the Auction ends at 11pm!</string>
+    <string name="app_name">MFA Summer Party Silent Auction</string>
+    <string name="gcm_sender_id">id:592875681538</string>
+
+    <string name="mfaAuction_welcomeText">Welcome to amazing art for an exceptional cause. These items were selected by MFA curators and patrons to support the contemporary artists and raise funds for the innovative programs at the MFA, Boston. See the works in person at the Summer Party, starting 9pm June 10, 2017. Bid high and often before the Auction ends at 11pm!</string>
 </resources>

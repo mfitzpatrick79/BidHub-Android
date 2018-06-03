@@ -55,7 +55,7 @@ public class DataManager {
   }
 
   public void fetchAllItems(final Runnable after) {
-    Log.i("TEST", "Fetching all items.");
+    Log.i("TEST", "Fetching all items...");
     ParseQuery<AuctionItem> query = ParseQuery.getQuery(AuctionItem.class);
     query.addAscendingOrder("programNumber");
     query.findInBackground(new FindCallback<AuctionItem>() {
@@ -63,10 +63,17 @@ public class DataManager {
       public void done(List<AuctionItem> items, ParseException e) {
         Log.i("TEST", "Items fetched");
 
+        if (e != null) {
+          Log.e("ERROR", "Error fetching items.", e);
+        }
+
         if (items == null) {
+          Log.i("TEST", "No items found");
+          Log.i("TEST", String.valueOf(items));
           Toast.makeText(context, "Looks like the backend is a little bit sad right now. Try again in a minute?", Toast.LENGTH_LONG).show();
         }
         else {
+          Log.i("TEST", "Items received");
           allItems.clear();
           allItems.addAll(items);
 
@@ -107,7 +114,7 @@ public class DataManager {
         for (String word : queryWords) {
           if (word.length() > 1 &&
                   (item.getTitle().toLowerCase().contains(word.toLowerCase()) || item.getArtist().toLowerCase().contains(word.toLowerCase()) ||
-                          item.getDescription().toLowerCase().contains(word.toLowerCase()) || item.getProgramNumberString().toLowerCase().contains(word.toLowerCase()) ||
+                          item.getDescription().toLowerCase().contains(word.toLowerCase()) ||
                           item.getMedia().toLowerCase().contains(word.toLowerCase())))
             results.add(item);
         }

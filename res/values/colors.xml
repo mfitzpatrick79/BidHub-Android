@@ -140,5 +140,8 @@
     <color name="reach_xing">#7ABA3A</color>
     <color name="reach_googleplus">#D53326</color>
     <color name="background_summer_party_brand">#648043</color>
+    <color name="background_summer_party_brand_2017">#e1f26d37</color>
+    <color name="translucent_white">#ebffffff</color>
+    <color name="background_material_dark">#ffffff</color>
 
 </resources>
